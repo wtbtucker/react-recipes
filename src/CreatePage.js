@@ -19,11 +19,17 @@ const RecipeForm = ({ handleSubmit }) => {
 
     const [responseBody, setResponseBody] = useState(recipeTemplate);
 
+    // Somewhere in handleChange the objects are getting mixed up
+
     const handleChange = (event) => {
+        console.log(event.target.name);
         if (event.target.name === 'ingredient_name') {
             let ingredients = [...responseBody.ingredients];
             ingredients[event.target.id][event.target.name] = event.target.value;
-            setResponseBody({ ingredients })
+            setResponseBody(prevState => ({
+                ...prevState,
+                ingredients : ingredients
+            }));
         } 
         else if (event.target.name === 'instruction_step') {
             let instructions = [...responseBody.instructions];
@@ -33,7 +39,13 @@ const RecipeForm = ({ handleSubmit }) => {
         else {
             setResponseBody({ ...responseBody, [event.target.name]: event.target.value})
         }
+        console.log(responseBody);
     };
+
+
+
+    // When one of the fields goes from empty strings to strings
+    // The other fields of empty strings disappear entirely
 
     let ingredient_list = responseBody.ingredients?.map((ingredient, index) => {
         return (
