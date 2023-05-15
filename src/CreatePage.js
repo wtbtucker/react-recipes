@@ -1,19 +1,25 @@
 import Recipe from "./Recipe";
 import { useState } from 'react';
 import uniqid from 'uniqid';
+import { curry } from './helpers';
 
-const RecipeForm = ({ handleSubmit }) => {
 
-
-    const recipeTemplate = {
+const recipeFactory = () => {
+    return {
         title: '',
         ingredients: [{ ingredient_name: ''}],
         instructions: [{ instruction_step: ''}]
-    }
+    };
+}
+
+
+const RecipeForm = ({ handleSubmit }) => {
+
+    const recipeTemplate = recipeFactory();
 
     const [responseBody, setResponseBody] = useState(recipeTemplate);
 
-    const handleChange = event => {
+    const handleChange = (event) => {
         if (event.target.name === 'ingredient_name') {
             let ingredients = [...responseBody.ingredients];
             ingredients[event.target.id][event.target.name] = event.target.value;
@@ -29,23 +35,6 @@ const RecipeForm = ({ handleSubmit }) => {
         }
     };
 
-
-    const addIngredient = event => {
-        event.preventDefault();
-        setResponseBody(prevState => ({
-            ...prevState,
-            ingredients: [...prevState.ingredients, {ingredient_name: ''}]
-        }));
-    };
-
-    const addStep = event => {
-        event.preventDefault();
-        setResponseBody(prevState => ({
-            ...prevState,
-            instructions: [...prevState.instructions, {instruction_step: ''}]
-        }));
-    }
-
     let ingredient_list = responseBody.ingredients?.map((ingredient, index) => {
         return (
             <div key={index}>
@@ -55,6 +44,7 @@ const RecipeForm = ({ handleSubmit }) => {
                 id={index}
                 placeholder="Ingredient Name"
                 name="ingredient_name"
+                value={ingredient.ingredient_name}
             />
         </div>
         );
@@ -69,10 +59,29 @@ const RecipeForm = ({ handleSubmit }) => {
                 id={index}
                 placeholder="Step"
                 name="instruction_step"
+                value={step.instruction_step}
             />
             </div>
         )
     })
+
+    const addFormField = (form_category, event) => {
+        
+        let new_field_object = {};
+        const field_name = (form_category==='ingredients') ? 'ingredient_name' : 'instruction_step';
+        new_field_object[field_name] = '';
+
+        event.preventDefault();
+        setResponseBody(prevState => ({
+        ...prevState,
+        [form_category]: [...prevState[form_category], new_field_object]
+        }));
+    }
+
+    const curriedAddFormField = curry(addFormField);
+
+    const addIgredientsField = curriedAddFormField('ingredients');
+    const addInstructionsField = curriedAddFormField('instructions');
 
     return (
         <form onSubmit={handleSubmit} onChange={handleChange}>
@@ -82,11 +91,11 @@ const RecipeForm = ({ handleSubmit }) => {
             </div>
             <div className="mb-3">
                 {ingredient_list}
-                <button className="btn btn-secondary" onClick={addIngredient}>Add Ingredient</button>
+                <button className="btn btn-secondary" onClick={addIgredientsField}>Add Ingredient</button>
             </div>
             <div className="mb-3">
                 {instruction_steps}
-                <button onClick={addStep} className="btn btn-secondary">Add Step</button>
+                <button onClick={addInstructionsField} className="btn btn-secondary">Add Step</button>
             </div>
             <button type="submit" className="btn btn-primary">Submit</button>
         </form>
