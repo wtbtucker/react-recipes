@@ -37,16 +37,15 @@ const CreatePage = () => {
     }
 
     const [responseBody, setResponseBody] = useState(recipeTemplate)
+    const [recipes, setRecipes] = useState([])
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const form = event.target;
-        const formData = new FormData(form)
-        const recipe = Object.fromEntries(formData.entries())
-        setResponseBody({
-            ...responseBody, 'title': recipe.title
-        })
-        console.log(responseBody)
+        const formData = new FormData(event.target);
+        const recipe = Object.fromEntries(formData.entries());
+        console.log(recipe)
+        setRecipes(prevState => ({ recipes: [...prevState, recipe]}));
+        console.log(recipes)
     }
 
     const handleChange = (event) => {
@@ -55,11 +54,11 @@ const CreatePage = () => {
     }
 
     let content;
-    
-    if (responseBody === recipeTemplate) {
-        content = <RecipeForm handleSubmit={handleSubmit} handleChange={handleChange}/>
+    if (recipes.length === 0) {
+        content = <RecipeForm handleSubmit={handleSubmit} handleChange = {handleChange}/>
     } else {
-        content = <Recipe recipe={responseBody}/>
+        console.log(recipes)
+        content = recipes.recipes?.map(recipe => <Recipe recipe={recipe}/>)
     }
 
     return (
