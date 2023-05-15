@@ -1,0 +1,120 @@
+import { useState } from 'react';
+import { curry } from './helpers';
+
+
+const recipeFactory = () => {
+    return {
+        title: '',
+        ingredients: [{ ingredient_name: ''}],
+        instructions: [{ instruction_step: ''}]
+    };
+}
+
+
+const RecipeForm = ({ handleSubmit }) => {
+
+    const recipeTemplate = recipeFactory();
+
+    const [responseBody, setResponseBody] = useState(recipeTemplate);
+
+    // Somewhere in handleChange the objects are getting mixed up
+
+    const handleChange = (event) => {
+        
+        const changeResponseBody = (category) => {
+                
+                let category_items = [...responseBody[category]];
+                console.log(category_items)
+                console.log(event.target)  
+                category_items[event.target.id][event.target.name] = event.target.value;
+                setResponseBody(prevState => ({
+                    ...prevState,
+                    [category] : [category]
+                }));
+        };
+
+    
+        if (event.target.name === 'title') {
+            setResponseBody({ ...responseBody, [event.target.name]: event.target.value})
+        } 
+        else {
+            let category = (event.target.name === 'instruction_step') ? 'instructions' : 'ingredients';
+            changeResponseBody(category)
+        }
+    };
+
+
+
+    // When one of the fields goes from empty strings to strings
+    // The other fields of empty strings disappear entirely
+
+    let ingredient_list = responseBody.ingredients?.map((ingredient, index) => {
+        return (
+            <div key={index}>
+            <input 
+                type="text"
+                className="form-control"
+                id={index}
+                placeholder="Ingredient Name"
+                name="ingredient_name"
+                value={ingredient.ingredient_name}
+                onChange={handleChange}
+            />
+        </div>
+        );
+    });
+
+    let instruction_steps = responseBody.instructions?.map((step, index) => {
+        return (
+            <div key={index}>
+                <input 
+                type="text"
+                className="form-control"
+                id={index}
+                placeholder="Step"
+                name="instruction_step"
+                value={step.instruction_step}
+                onChange={handleChange}
+            />
+            </div>
+        )
+    })
+
+    const addFormField = (form_category, event) => {
+        
+        let new_field_object = {};
+        const field_name = (form_category==='ingredients') ? 'ingredient_name' : 'instruction_step';
+        new_field_object[field_name] = '';
+
+        event.preventDefault();
+        setResponseBody(prevState => ({
+        ...prevState,
+        [form_category]: [...prevState[form_category], new_field_object]
+        }));
+    }
+
+    const curriedAddFormField = curry(addFormField);
+
+    const addIgredientsField = curriedAddFormField('ingredients');
+    const addInstructionsField = curriedAddFormField('instructions');
+
+    return (
+        <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+                <label htmlFor="inputTitle" className="form-label">Title</label>
+                <input type="text" className="form-control" id="inputTitle" name="title"></input>
+            </div>
+            <div className="mb-3">
+                {ingredient_list}
+                <button className="btn btn-secondary" onClick={addIgredientsField}>Add Ingredient</button>
+            </div>
+            <div className="mb-3">
+                {instruction_steps}
+                <button onClick={addInstructionsField} className="btn btn-secondary">Add Step</button>
+            </div>
+            <button type="submit" className="btn btn-primary">Submit</button>
+        </form>
+    )
+}
+
+export default RecipeForm;
