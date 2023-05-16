@@ -22,17 +22,13 @@ const RecipeForm = ({ handleSubmit }) => {
     const handleChange = (event) => {
         
         const changeResponseBody = (category) => {
-                
                 let category_items = [...responseBody[category]];
-                console.log(category_items)
-                console.log(event.target)  
                 category_items[event.target.id][event.target.name] = event.target.value;
                 setResponseBody(prevState => ({
                     ...prevState,
-                    [category] : [category]
+                    [category]: category_items
                 }));
         };
-
     
         if (event.target.name === 'title') {
             setResponseBody({ ...responseBody, [event.target.name]: event.target.value})
@@ -58,7 +54,7 @@ const RecipeForm = ({ handleSubmit }) => {
                 placeholder="Ingredient Name"
                 name="ingredient_name"
                 value={ingredient.ingredient_name}
-                onChange={handleChange}
+                onChange={e=>handleChange(e)}
             />
         </div>
         );
@@ -74,7 +70,7 @@ const RecipeForm = ({ handleSubmit }) => {
                 placeholder="Step"
                 name="instruction_step"
                 value={step.instruction_step}
-                onChange={handleChange}
+                onChange={e=>handleChange(e)}
             />
             </div>
         )
@@ -95,7 +91,7 @@ const RecipeForm = ({ handleSubmit }) => {
 
     const curriedAddFormField = curry(addFormField);
 
-    const addIgredientsField = curriedAddFormField('ingredients');
+    const addIngredientsField = curriedAddFormField('ingredients');
     const addInstructionsField = curriedAddFormField('instructions');
 
     return (
@@ -106,7 +102,7 @@ const RecipeForm = ({ handleSubmit }) => {
             </div>
             <div className="mb-3">
                 {ingredient_list}
-                <button className="btn btn-secondary" onClick={addIgredientsField}>Add Ingredient</button>
+                <button className="btn btn-secondary" onClick={addIngredientsField}>Add Ingredient</button>
             </div>
             <div className="mb-3">
                 {instruction_steps}
