@@ -10,14 +10,18 @@ const recipeFactory = () => {
     };
 }
 
-
-const RecipeForm = ({ handleSubmit }) => {
+const RecipeForm = ({ addNewRecipe }) => {
 
     const recipeTemplate = recipeFactory();
 
     const [responseBody, setResponseBody] = useState(recipeTemplate);
 
-    // Somewhere in handleChange the objects are getting mixed up
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        let newRecipe = responseBody;
+        console.log(newRecipe)
+        addNewRecipe(newRecipe);
+    };
 
     const handleChange = (event) => {
         
@@ -38,11 +42,6 @@ const RecipeForm = ({ handleSubmit }) => {
             changeResponseBody(category)
         }
     };
-
-
-
-    // When one of the fields goes from empty strings to strings
-    // The other fields of empty strings disappear entirely
 
     let ingredient_list = responseBody.ingredients?.map((ingredient, index) => {
         return (
@@ -98,7 +97,7 @@ const RecipeForm = ({ handleSubmit }) => {
         <form onSubmit={handleSubmit}>
             <div className="mb-3">
                 <label htmlFor="inputTitle" className="form-label">Title</label>
-                <input type="text" className="form-control" id="inputTitle" name="title"></input>
+                <input type="text" className="form-control" id="inputTitle" name="title" onChange={e=>handleChange(e)}></input>
             </div>
             <div className="mb-3">
                 {ingredient_list}
