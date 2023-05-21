@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 const Navbar = () => {
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -7,7 +9,7 @@ const Navbar = () => {
                     <li className="nav-item"><a className="nav-link" href="/">Recipes</a></li>
                     <li className="nav-item"><a className="nav-link" href="/recipes/create">New Recipe</a></li>
                     <li className="nav-item"><a className="nav-link" href="/user/logout">Logout</a></li>
-                    <li className="nav-item"><a className="nav-link" href="/about">About</a></li>
+                    <li className="nav-item"><Link to='/about'>About</Link></li>
                     <li className="nav-item"><a className="nav-link" href="/user/login">Login</a></li>
                     <li className="nav-item"><a className="nav-link" href="/user/register">Register</a></li>
                 </ul>

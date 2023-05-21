@@ -5,6 +5,7 @@ const Recipe = ({ recipe }) => {
     const instruction_steps = recipe.instructions?.map((instruction, index) => {
         return <li className="list-group-item" id={index}>{instruction.instruction_step}</li>
     });
+
     return (
         <div className="recipe details">
             <h1 className="display-4">{recipe.title}</h1>

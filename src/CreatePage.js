@@ -6,7 +6,7 @@ import uniqid from 'uniqid';
 const CreatePage = () => {
     
     const [recipes, setRecipes] = useState([])
-
+ 
     const addNewRecipe = function(newRecipe) {
         console.log(newRecipe)
         newRecipe.id = uniqid();

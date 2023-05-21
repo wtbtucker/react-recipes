@@ -10,11 +10,12 @@ const recipeFactory = () => {
     };
 }
 
-const RecipeForm = ({ addNewRecipe }) => {
+const RecipeForm = ({  addNewRecipe }) => {
 
     const recipeTemplate = recipeFactory();
 
     const [responseBody, setResponseBody] = useState(recipeTemplate);
+    
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -97,7 +98,7 @@ const RecipeForm = ({ addNewRecipe }) => {
         <form onSubmit={handleSubmit}>
             <div className="mb-3">
                 <label htmlFor="inputTitle" className="form-label">Title</label>
-                <input type="text" className="form-control" id="inputTitle" name="title" onChange={e=>handleChange(e)}></input>
+                <input type="text" className="form-control" id="inputTitle" name="title" value={responseBody.title} onChange={e=>handleChange(e)}></input>
             </div>
             <div className="mb-3">
                 {ingredient_list}

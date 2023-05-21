@@ -1,17 +1,20 @@
-import Navbar from './Navbar';
 import CreatePage from './CreatePage';
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import About from './About';
 import Footer from './Footer';
+import Navbar from './Navbar';
 
 function App() {
   return (
-    <div className="App">
+
+    <BrowserRouter>
       <Navbar />
-      <div className="content">
-        <CreatePage />
-      </div>
+      <Routes>
+          <Route path='/' element={<CreatePage/>}/>
+          <Route path='/about' element={<About/>}/>
+      </Routes>
       <Footer />
-    </div>
+    </BrowserRouter>
   );
 }
 
