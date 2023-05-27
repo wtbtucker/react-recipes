@@ -2,4 +2,47 @@ GET http://localhost:3000/recipes
 
 ###
 
-GET http://localhost:3000/recipes/15
+GET http://localhost:3000/recipes/64722bba57b4217e70606d8c
+
+###
+
+POST http://localhost:3000/recipes
+Content-Type: application/json
+
+{
+    "title": "Roast Chicken",
+    "ingredients": [
+        {
+            "ingredient": "Chicken",
+            "units": "Whole",
+            "quantity": "1"
+        },
+        {
+            "ingredient": "Carrots",
+            "units": "Whole",
+            "quantity": "3"
+        },
+        {
+            "ingredient": "Onions",
+            "units": "Whole",
+            "quantity": "2"
+        }
+    ],
+    "instructions": [
+        "Salt the chicken and leave overnight in the refrigerator",
+        "Bake at 375 for 45 minutes"
+    ]
+}
+
+###
+
+DELETE http://localhost:3000/recipes/63c571cc9e79cb4b7050d6b3
+
+###
+
+PUT http://localhost:3000/recipes/64722bba57b4217e70606d8c
+Content-Type: application/json
+
+{
+    "title": "Roast Chicken"
+}
