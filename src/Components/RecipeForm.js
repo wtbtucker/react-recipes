@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { curry } from './helpers';
+import { curry } from '../helpers';
 
 
 const recipeFactory = () => {

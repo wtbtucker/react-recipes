@@ -1,4 +1,4 @@
-import CreatePage from './CreatePage';
+import Home from './Home';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import About from './About';
 import Footer from './Footer';
@@ -10,7 +10,7 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <Routes>
-          <Route path='/' element={<CreatePage/>}/>
+          <Route path='/' element={<Home/>}/>
           <Route path='/about' element={<About/>}/>
       </Routes>
       <Footer />
