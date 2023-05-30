@@ -1,48 +1,38 @@
-GET http://localhost:3000/recipes
+GET http://localhost:5050/recipes
 
 ###
 
-GET http://localhost:3000/recipes/64722bba57b4217e70606d8c
+GET http://localhost:5050/recipes/64722bba57b4217e70606d8c
 
 ###
 
-POST http://localhost:3000/recipes
+POST http://localhost:5050/recipes
 Content-Type: application/json
 
 {
-    "title": "Roast Chicken",
+    "title": "Chicken",
     "ingredients": [
         {
-            "ingredient": "Chicken",
-            "units": "Whole",
+            "ingredient": "chicken",
+            "units": "whole",
             "quantity": "1"
-        },
-        {
-            "ingredient": "Carrots",
-            "units": "Whole",
-            "quantity": "3"
-        },
-        {
-            "ingredient": "Onions",
-            "units": "Whole",
-            "quantity": "2"
         }
     ],
     "instructions": [
-        "Salt the chicken and leave overnight in the refrigerator",
-        "Bake at 375 for 45 minutes"
+        "Dry brine in the refrigerator overnight",
+        "roast at 375 for 1 hour"
     ]
 }
 
 ###
 
-DELETE http://localhost:3000/recipes/63c571cc9e79cb4b7050d6b3
+DELETE http://localhost:5050/recipes/64760a9c6c490039f73675f9
 
 ###
 
-PUT http://localhost:3000/recipes/64722bba57b4217e70606d8c
+PUT http://localhost:5050/recipes/64722bba57b4217e70606d8c
 Content-Type: application/json
 
 {
-    "title": "Roast Chicken"
+    "title": "Roasted Chicken"
 }

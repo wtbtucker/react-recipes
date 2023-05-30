@@ -3,7 +3,7 @@ import RecipeForm from "./RecipeForm";
 import {React, useState} from "react";
 import uniqid from 'uniqid';
 
-const CreatePage = () => {
+const Home = () => {
     
     const [recipes, setRecipes] = useState([])
  
@@ -33,4 +33,4 @@ const CreatePage = () => {
     )
 }
 
-export default CreatePage;
+export default Home;

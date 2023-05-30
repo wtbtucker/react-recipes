@@ -1,12 +1,16 @@
 import { useState } from 'react';
-import { curry } from '../helpers';
+import { curry, postData } from '../helpers';
 
 
 const recipeFactory = () => {
     return {
         title: '',
-        ingredients: [{ ingredient_name: ''}],
-        instructions: [{ instruction_step: ''}]
+        ingredients: [{ 
+            ingredient: '',
+            units: '',
+            quantity: '',
+        }],
+        instructions: ['']
     };
 }
 
@@ -15,47 +19,75 @@ const RecipeForm = ({  addNewRecipe }) => {
     const recipeTemplate = recipeFactory();
 
     const [responseBody, setResponseBody] = useState(recipeTemplate);
-    
 
     const handleSubmit = (event) => {
         event.preventDefault();
         let newRecipe = responseBody;
         console.log(newRecipe)
-        addNewRecipe(newRecipe);
+        postData('http://localhost:5050/recipes', newRecipe)
     };
 
     const handleChange = (event) => {
         
         const changeResponseBody = (category) => {
-                let category_items = [...responseBody[category]];
-                category_items[event.target.id][event.target.name] = event.target.value;
-                setResponseBody(prevState => ({
-                    ...prevState,
-                    [category]: category_items
-                }));
+            let category_items = [...responseBody[category]];
+            category_items[event.target.id][event.target.name] = event.target.value;
+            setResponseBody(prevState => ({
+                ...prevState,
+                [category]: category_items
+            }));
         };
+
+        const changeInstructionsBody = () => {
+            let newInstructions = [...responseBody.instructions];
+            newInstructions[event.target.id] = event.target.value;
+            setResponseBody(prevState => ({
+                ...prevState,
+                instructions: newInstructions
+            }));
+        }
     
         if (event.target.name === 'title') {
             setResponseBody({ ...responseBody, [event.target.name]: event.target.value})
         } 
+        else if (event.target.name === 'instruction') {
+            changeInstructionsBody();
+        }
         else {
-            let category = (event.target.name === 'instruction_step') ? 'instructions' : 'ingredients';
-            changeResponseBody(category)
+            changeResponseBody('ingredients')
         }
     };
 
     let ingredient_list = responseBody.ingredients?.map((ingredient, index) => {
         return (
             <div key={index}>
-            <input 
-                type="text"
-                className="form-control"
-                id={index}
-                placeholder="Ingredient Name"
-                name="ingredient_name"
-                value={ingredient.ingredient_name}
-                onChange={e=>handleChange(e)}
-            />
+                <input 
+                    type="text"
+                    className="form-control"
+                    id={index}
+                    placeholder="Ingredient"
+                    name="ingredient"
+                    value={ingredient.ingredient}
+                    onChange={e=>handleChange(e)}
+                />
+                <input 
+                    type="text"
+                    className="form-control"
+                    id={index}
+                    placeholder="Units"
+                    name="units"
+                    value={ingredient.units}
+                    onChange={e=>handleChange(e)}
+                />
+                <input 
+                    type="text"
+                    className="form-control"
+                    id={index}
+                    placeholder="Quantity"
+                    name="quantity"
+                    value={ingredient.quantity}
+                    onChange={e=>handleChange(e)}
+                />
         </div>
         );
     });
@@ -68,8 +100,8 @@ const RecipeForm = ({  addNewRecipe }) => {
                 className="form-control"
                 id={index}
                 placeholder="Step"
-                name="instruction_step"
-                value={step.instruction_step}
+                name="instruction"
+                value={step}
                 onChange={e=>handleChange(e)}
             />
             </div>
@@ -78,9 +110,16 @@ const RecipeForm = ({  addNewRecipe }) => {
 
     const addFormField = (form_category, event) => {
         
-        let new_field_object = {};
-        const field_name = (form_category==='ingredients') ? 'ingredient_name' : 'instruction_step';
-        new_field_object[field_name] = '';
+        let new_field_object;
+        if (form_category === 'ingredients') {
+            new_field_object = {
+                ingredient: '',
+                units: '',
+                quantity: ''
+            }
+        } else {
+            new_field_object = '';
+        }        
 
         event.preventDefault();
         setResponseBody(prevState => ({
