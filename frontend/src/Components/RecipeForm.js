@@ -58,9 +58,18 @@ const RecipeForm = ({  addNewRecipe }) => {
         }
     };
 
+    const deleteFormField = (event) => {
+        let category_items = [...responseBody[event.target.name]]
+        category_items.splice(event.target.id, 1);
+        setResponseBody(prevState => ({
+            ...prevState,
+            [event.target.name]: category_items
+        }));
+    }
+
     let ingredient_list = responseBody.ingredients?.map((ingredient, index) => {
         return (
-            <div key={index}>
+            <div className="d-flex justify-content-evenly gap-3" key={index}>
                 <input 
                     type="text"
                     className="form-control"
@@ -88,13 +97,20 @@ const RecipeForm = ({  addNewRecipe }) => {
                     value={ingredient.quantity}
                     onChange={e=>handleChange(e)}
                 />
+                <button 
+                className="btn-close" 
+                aria-label="Close"
+                name='ingredients'
+                id={index}
+                onClick={e=>deleteFormField(e)}
+                ></button>
         </div>
         );
     });
 
     let instruction_steps = responseBody.instructions?.map((step, index) => {
         return (
-            <div key={index}>
+            <div key={index} className="d-flex justify-content-evenly gap-3">
                 <input 
                 type="text"
                 className="form-control"
@@ -103,7 +119,14 @@ const RecipeForm = ({  addNewRecipe }) => {
                 name="instruction"
                 value={step}
                 onChange={e=>handleChange(e)}
-            />
+                />
+                <button 
+                className="btn-close" 
+                aria-label="Close"
+                name='instructions'
+                id={index}
+                onClick={e=>deleteFormField(e)}
+                ></button>
             </div>
         )
     })
@@ -134,7 +157,7 @@ const RecipeForm = ({  addNewRecipe }) => {
     const addInstructionsField = curriedAddFormField('instructions');
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="p-3">
             <div className="mb-3">
                 <label htmlFor="inputTitle" className="form-label">Title</label>
                 <input type="text" className="form-control" id="inputTitle" name="title" value={responseBody.title} onChange={e=>handleChange(e)}></input>
