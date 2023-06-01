@@ -1,9 +1,17 @@
 const Recipe = ({ recipe }) => {
     const ingredients_list = recipe.ingredients?.map((ingredient, index) => {
-        return <li className="list-group-item" id={index}>{ingredient.ingredient_name}</li>
+        return <li className="list-group-item" id={index}>
+                <div>
+                    {ingredient.ingredient}
+                    {ingredient.units}
+                    {ingredient.quantity}
+                </div>
+            </li>
     });
     const instruction_steps = recipe.instructions?.map((instruction, index) => {
-        return <li className="list-group-item" id={index}>{instruction.instruction_step}</li>
+        return <li className="list-group-item" id={index}>
+            {instruction}
+            </li>
     });
 
     return (

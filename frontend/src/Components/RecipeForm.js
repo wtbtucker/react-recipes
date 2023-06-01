@@ -14,7 +14,7 @@ const recipeFactory = () => {
     };
 }
 
-const RecipeForm = ({  addNewRecipe }) => {
+const RecipeForm = () => {
 
     const recipeTemplate = recipeFactory();
 

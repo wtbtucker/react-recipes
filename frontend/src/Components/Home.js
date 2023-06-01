@@ -1,32 +1,28 @@
 import Recipe from "./Recipe";
-import RecipeForm from "./RecipeForm";
-import {React, useState} from "react";
-import uniqid from 'uniqid';
+import {React, useState, useEffect} from "react";
 
 const Home = () => {
     
     const [recipes, setRecipes] = useState([])
  
-    const addNewRecipe = function(newRecipe) {
-        console.log(newRecipe)
-        newRecipe.id = uniqid();
-        setRecipes(prevRecipes => ({
-            recipes: [...prevRecipes, newRecipe]
-        }))
-    }
+    useEffect(() => {
+        async function fetchAllRecipes() {
+            let response = await fetch('http://localhost:5050/recipes')
+            response = await response.json();
+            console.log(response)
+            setRecipes({
+                recipes: response
+            })
+        }
+        fetchAllRecipes();
+    }, [])
 
-    let content;
-    if (recipes.length === 0) {
-        content = <RecipeForm addNewRecipe={addNewRecipe}/>
-    } else {
-        console.log(recipes)
-        content = recipes.recipes?.map(recipe => <li key={recipe.id} className="list-group-item"><Recipe recipe={recipe}/></li>)
-    }
+    let recipe_list = recipes.recipes?.map(recipe => <li key={recipe._id} className="list-group-item"><Recipe recipe={recipe}/></li>)
 
     return (
         <div>
             <ul className="list-group">
-                {content}
+                {recipe_list}
             </ul>          
         </div>
         
