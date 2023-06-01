@@ -6,10 +6,10 @@ const Navbar = () => {
             <h1>Recipe Vault</h1>
             <div className="collapse navbar-collapse">
                 <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li className="nav-item"><a className="nav-link" href="/">Recipes</a></li>
-                    <li className="nav-item"><a className="nav-link" href="/recipes/create">New Recipe</a></li>
+                    <li className="nav-item"><Link className="nav-link" to='/'>Recipes</Link></li>
+                    <li className="nav-item"><Link className="nav-link" to='/create'>New Recipe</Link></li>
                     <li className="nav-item"><a className="nav-link" href="/user/logout">Logout</a></li>
-                    <li className="nav-item"><Link to='/about'>About</Link></li>
+                    <li className="nav-item"><Link className="nav-link" to='/about'>About</Link></li>
                     <li className="nav-item"><a className="nav-link" href="/user/login">Login</a></li>
                     <li className="nav-item"><a className="nav-link" href="/user/register">Register</a></li>
                 </ul>
