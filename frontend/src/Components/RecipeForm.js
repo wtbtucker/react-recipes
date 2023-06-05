@@ -18,56 +18,53 @@ const RecipeForm = () => {
 
     const recipeTemplate = recipeFactory();
 
-    const [responseBody, setResponseBody] = useState(recipeTemplate);
+    const [recipe, setRecipe] = useState(recipeTemplate);
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        let newRecipe = responseBody;
+        let newRecipe = recipe;
         console.log(newRecipe)
         postData('http://localhost:5050/recipes', newRecipe)
     };
 
+    // manually merge deeply nested recipe state
     const handleChange = (event) => {
         
-        const changeResponseBody = (category) => {
-            let category_items = [...responseBody[category]];
-            category_items[event.target.id][event.target.name] = event.target.value;
-            setResponseBody(prevState => ({
+        const changeRecipeCategory = (category) => {
+            let category_items = [...recipe[category]];
+            if (category === 'instructions') {
+                category_items[event.target.id] = event.target.value
+            }
+            else {
+                category_items[event.target.id][event.target.name] = event.target.value;
+            }
+            setRecipe(prevState => ({
                 ...prevState,
                 [category]: category_items
             }));
         };
-
-        const changeInstructionsBody = () => {
-            let newInstructions = [...responseBody.instructions];
-            newInstructions[event.target.id] = event.target.value;
-            setResponseBody(prevState => ({
-                ...prevState,
-                instructions: newInstructions
-            }));
-        }
     
         if (event.target.name === 'title') {
-            setResponseBody({ ...responseBody, [event.target.name]: event.target.value})
+            setRecipe({ ...recipe, [event.target.name]: event.target.value})
         } 
         else if (event.target.name === 'instruction') {
-            changeInstructionsBody();
+            changeRecipeCategory('instructions');
         }
         else {
-            changeResponseBody('ingredients')
+            changeRecipeCategory('ingredients')
         }
     };
 
     const deleteFormField = (event) => {
-        let category_items = [...responseBody[event.target.name]]
+        let category_items = [...recipe[event.target.name]]
         category_items.splice(event.target.id, 1);
-        setResponseBody(prevState => ({
+        setRecipe(prevState => ({
             ...prevState,
             [event.target.name]: category_items
         }));
     }
 
-    let ingredient_list = responseBody.ingredients?.map((ingredient, index) => {
+    let ingredient_list = recipe.ingredients?.map((ingredient, index) => {
         return (
             <div className="d-flex justify-content-evenly gap-3" key={index}>
                 <input 
@@ -108,7 +105,7 @@ const RecipeForm = () => {
         );
     });
 
-    let instruction_steps = responseBody.instructions?.map((step, index) => {
+    let instruction_steps = recipe.instructions?.map((step, index) => {
         return (
             <div key={index} className="d-flex justify-content-evenly gap-3">
                 <input 
@@ -145,7 +142,7 @@ const RecipeForm = () => {
         }        
 
         event.preventDefault();
-        setResponseBody(prevState => ({
+        setRecipe(prevState => ({
         ...prevState,
         [form_category]: [...prevState[form_category], new_field_object]
         }));
@@ -160,7 +157,7 @@ const RecipeForm = () => {
         <form onSubmit={handleSubmit} className="p-3">
             <div className="mb-3">
                 <label htmlFor="inputTitle" className="form-label">Title</label>
-                <input type="text" className="form-control" id="inputTitle" name="title" value={responseBody.title} onChange={e=>handleChange(e)}></input>
+                <input type="text" className="form-control" id="inputTitle" name="title" value={recipe.title} onChange={e=>handleChange(e)}></input>
             </div>
             <div className="mb-3">
                 {ingredient_list}

@@ -1,5 +1,5 @@
-import Recipe from "./Recipe";
 import {React, useState, useEffect} from "react";
+import RecipePreview from "./RecipePreview";
 
 const Home = () => {
     
@@ -17,13 +17,11 @@ const Home = () => {
         fetchAllRecipes();
     }, [])
 
-    let recipe_list = recipes.recipes?.map(recipe => <li key={recipe._id} className="list-group-item"><Recipe recipe={recipe}/></li>)
+    let recipe_list = recipes.recipes?.map(recipe => <RecipePreview key={recipe._id} recipe={recipe}/>)
 
     return (
         <div>
-            <ul className="list-group">
-                {recipe_list}
-            </ul>          
+                {recipe_list} 
         </div>
         
     )

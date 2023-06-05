@@ -1,13 +1,16 @@
-const Recipe = ({ recipe }) => {
+import { useLoaderData } from "react-router-dom";
+
+const Recipe = () => {
+    const recipe = useLoaderData;
     const ingredients_list = recipe.ingredients?.map((ingredient, index) => {
-        return <tr id={index}>
+        return <tr key={index}>
                 <td>{ingredient.quantity}</td>
                 <td>{ingredient.units}</td>
                 <td>{ingredient.ingredient}</td>
             </tr>
     });
     const instruction_steps = recipe.instructions?.map((instruction, index) => {
-        return <li className="list-group-item" id={index}>
+        return <li className="list-group-item" key={index}>
             {instruction}
             </li>
     });
