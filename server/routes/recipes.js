@@ -4,22 +4,6 @@ const Recipe = require('../models/recipe');
 
 module.exports = router
 
-
-const getRecipe = async (req, res, next) => {
-    let recipe;
-    try {
-        recipe = await Recipe.findById(req.params.id)
-        if (recipe == null) {
-            return res.status(403).json({ message: 'Cannot find recipe'})
-        }
-    } catch (err) {
-        return res.status(500).json({ message: err.message });
-    }
-    res.recipe = recipe
-    next();
-}
-
-
 // Get all recipes
 router.get('/', async (req, res) => {
     try {
@@ -32,8 +16,17 @@ router.get('/', async (req, res) => {
 
 
 // Get one recipe
-router.get('/:id', getRecipe, (req, res) => {
-    res.send(res.recipe);
+router.get('/:id', async (req, res) => {
+    let recipe;
+    try {
+        recipe = await Recipe.findById(req.params.id)
+        if (recipe == null) {
+            res.status(403).json({ message: 'Cannot find recipe'})
+        }
+        res.status(200).json(recipe)
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
 });
 
 
@@ -52,19 +45,11 @@ router.post('/', async (req, res) => {
 })
 
 
-router.put('/:id', getRecipe, async (req, res) => {
-    if (req.body.title != null) {
-        res.recipe.title = req.body.title
-    }
-    if (req.body.ingredients != null) {
-        res.recipe.ingredients = req.body.ingredients
-    }
-    if (req.body.instructions != null) {
-        res.recipe.instructions = req.body.instructions
-    }
+router.put('/:id', async (req, res) => {
     try {
-        const updatedRecipe = await Recipe.findByIdAndUpdate({ _id: req.params.id }, res.recipe);
-        res.json(updatedRecipe);
+        const updatedRecipe = await Recipe.findByIdAndUpdate({ _id: req.params.id }, req.body, { returnDocument: 'after' });
+        // updates the document but sends the old version in the json response
+        res.status(201).json(updatedRecipe);
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
