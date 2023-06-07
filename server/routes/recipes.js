@@ -48,7 +48,6 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
     try {
         const updatedRecipe = await Recipe.findByIdAndUpdate({ _id: req.params.id }, req.body, { returnDocument: 'after' });
-        // updates the document but sends the old version in the json response
         res.status(201).json(updatedRecipe);
     } catch (err) {
         res.status(400).json({ message: err.message });

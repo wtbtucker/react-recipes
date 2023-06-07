@@ -36,3 +36,25 @@ Content-Type: application/json
 {
     "title": "Roasted Chicken"
 }
+
+###
+
+POST http://localhost:5050/users
+Content-Type: application/json
+
+{
+    "username": "Gandalf",
+    "password": "password",
+    "confirm": "password",
+    "email": "gandalf@test.com"
+}
+
+###
+
+POST http://localhost:5050/users/login
+Content-Type: application/json
+
+{
+    "username": "Gandalf",
+    "password": "password"
+}
