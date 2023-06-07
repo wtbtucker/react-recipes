@@ -1,10 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
-const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 module.exports = router
 
+const createJWT = (email, userId, duration) => {
+    const payload = {
+        email,
+        userId,
+        duration
+    }
+    return jwt.sign(payload, process.env.TOKEN_SECRET, {
+        expiresIn: duration
+    });
+}
 
 router.post('/login', async (req, res) => {
     const user = await User.findOne({ username: req.body.username })
@@ -14,8 +24,19 @@ router.post('/login', async (req, res) => {
     
     try {
         if (await user.comparePassword(req.body.password)) {
-            res.send('Success')
-            // req.session.userid = req.body.username;
+            let accessToken = createJWT(user.email, user._id, 3600);
+            jwt.verify(accessToken, process.env.TOKEN_SECRET, (err, decoded) => {
+                if (err) {
+                    res.status(500).json({ message: err });
+                }
+                if (decoded) {
+                    res.status(200).json({
+                        success: true,
+                        token: accessToken,
+                        message: user
+                    })
+                }
+            })
         } else {
             res.send('Incorrect username or password')
         }
