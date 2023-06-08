@@ -27,7 +27,6 @@ const RecipeForm = () => {
         postData('http://localhost:5050/recipes', newRecipe)
     };
 
-    // manually merge deeply nested recipe state
     const handleChange = (event) => {
         
         const changeRecipeCategory = (category) => {

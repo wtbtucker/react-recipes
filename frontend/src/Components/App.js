@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import About from './About';
 import Footer from './Footer';
 import Navbar from './Navbar';
+import Login from './Login';
 
 function App() {
   
@@ -20,9 +21,10 @@ function App() {
             element={<Recipe/>}
             loader={async ({ params }) => {
               return fetch(
-                `http://localhost:5050/recipes/${params.recipeId}.json`
+                `http://localhost:5050/recipes/${params.recipeId}`
               )
             }}/>
+          <Route path='login' element={<Login/>}/>
       </Routes>
       <Footer />
     </BrowserRouter>
