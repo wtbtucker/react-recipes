@@ -6,6 +6,7 @@ import About from './About';
 import Footer from './Footer';
 import Navbar from './Navbar';
 import Login from './Login';
+import Register from './Register';
 
 function App() {
   
@@ -25,6 +26,7 @@ function App() {
               )
             }}/>
           <Route path='login' element={<Login/>}/>
+          <Route path='register' element={<Register/>}/>
       </Routes>
       <Footer />
     </BrowserRouter>
