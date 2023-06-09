@@ -24,18 +24,10 @@ router.post('/login', async (req, res) => {
     
     try {
         if (await user.comparePassword(req.body.password)) {
-            let accessToken = createJWT(user.email, user._id, 3600);
-            jwt.verify(accessToken, process.env.TOKEN_SECRET, (err, decoded) => {
-                if (err) {
-                    res.status(500).json({ message: err });
-                }
-                if (decoded) {
-                    res.status(200).json({
-                        success: true,
-                        token: accessToken,
-                        message: user
-                    })
-                }
+            let token = createJWT(user.email, user._id, 3600);
+            return res.status(200).json({
+                message: 'Login successful',
+                token
             })
         } else {
             res.send('Incorrect username or password')

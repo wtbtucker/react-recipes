@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { postData } from '../helpers';
 
 const Login = () => {
 
@@ -8,10 +7,20 @@ const Login = () => {
         password: '',
     })
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         let user = userCreds;
-        postData('http://localhost:5050/users/login', user)
+        const response = await fetch(
+            'http://localhost:5050/users/login',
+            {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(user)
+            });
+        console.log(response);
+        const data = await response.json();
+        localStorage.setItem('token', data.token);
+        window.location.reload();
     }
 
     const handleChange = event => {
