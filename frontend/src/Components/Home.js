@@ -9,7 +9,6 @@ const Home = () => {
         async function fetchAllRecipes() {
             let response = await fetch('http://localhost:5050/recipes')
             response = await response.json();
-            console.log(response)
             setRecipes({
                 recipes: response
             })
@@ -21,7 +20,7 @@ const Home = () => {
 
     return (
         <div>
-                {recipe_list} 
+            {recipe_list} 
         </div>
         
     )

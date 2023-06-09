@@ -159,10 +159,12 @@ const RecipeForm = () => {
                 <input type="text" className="form-control" id="inputTitle" name="title" value={recipe.title} onChange={e=>handleChange(e)}></input>
             </div>
             <div className="mb-3">
+                <label className="form-label">Ingredients</label>
                 {ingredient_list}
                 <button className="btn btn-secondary" onClick={addIngredientsField}>Add Ingredient</button>
             </div>
             <div className="mb-3">
+                <label className="form-label">Instructions</label>
                 {instruction_steps}
                 <button onClick={addInstructionsField} className="btn btn-secondary">Add Step</button>
             </div>

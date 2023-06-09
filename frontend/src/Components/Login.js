@@ -17,7 +17,6 @@ const Login = () => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(user)
             });
-        console.log(response);
         const data = await response.json();
         localStorage.setItem('token', data.token);
         window.location.reload();
@@ -43,7 +42,7 @@ const Login = () => {
                 ></input>
             </div>
             <div className='form-group'>
-                <label></label>
+                <label>Password</label>
                 <input 
                     type='password'
                     className='form-control'
