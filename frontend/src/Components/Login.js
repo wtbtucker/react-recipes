@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
 
@@ -6,6 +7,7 @@ const Login = () => {
         username: '',
         password: '',
     })
+    const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -19,7 +21,7 @@ const Login = () => {
             });
         const data = await response.json();
         localStorage.setItem('token', data.token);
-        window.location.reload();
+        navigate('/');
     }
 
     const handleChange = event => {

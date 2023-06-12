@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { curry, postData } from '../helpers';
+import { curry } from '../helpers';
 
 
 const recipeFactory = () => {
@@ -19,12 +19,29 @@ const RecipeForm = () => {
     const recipeTemplate = recipeFactory();
 
     const [recipe, setRecipe] = useState(recipeTemplate);
+    const [error, setError] = useState(null);
 
-    const handleSubmit = (event) => {
+    const token = localStorage.getItem('token')
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        let newRecipe = recipe;
-        console.log(newRecipe)
-        postData('http://localhost:5050/recipes', newRecipe)
+        try {
+            console.log(token)
+            fetch(
+                'http://localhost:5050/recipes', 
+                {
+                    method: 'POST',
+                    headers: { 
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`,
+                        "Access-Control-Max-Age": 3600
+                    },
+                    body: JSON.stringify(recipe)
+            })
+            .then(response => console.log(response));
+        } catch (err) {
+            setError(err);
+        }      
     };
 
     const handleChange = (event) => {
@@ -151,6 +168,10 @@ const RecipeForm = () => {
 
     const addIngredientsField = curriedAddFormField('ingredients');
     const addInstructionsField = curriedAddFormField('instructions');
+
+    if (error) {
+        return <span>caught error</span>
+    }
 
     return (
         <form onSubmit={handleSubmit} className="p-3">

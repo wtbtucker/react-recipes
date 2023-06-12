@@ -3,6 +3,9 @@ const router = express.Router();
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 
+const dotenv = require('dotenv');
+dotenv.config();
+
 module.exports = router
 
 const createJWT = (email, userId, duration) => {

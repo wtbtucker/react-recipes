@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Recipe = require('../models/recipe');
+const verifyToken = require('../middleware')
 
 module.exports = router
 
@@ -30,7 +31,7 @@ router.get('/:id', async (req, res) => {
 });
 
 
-router.post('/', async (req, res) => {
+router.post('/', verifyToken, async function(req, res) {
     const recipe = new Recipe({
         title: req.body.title,
         ingredients: req.body.ingredients,
